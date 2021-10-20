@@ -1,0 +1,115 @@
+openapi: 3.0.1
+info:
+  title: numberConverterSoap
+  description: >-
+    API/Micro serviço responsável por disponibizar a conversão de Integer para
+    String
+  contact:
+    name: Developer
+    email: gp-alexandresantos@uol.com.br
+  version: 1.0.0
+servers:
+  - url: '{protocol}://{environment}-services-hml.com/{basePath}'
+    variables:
+      basePath:
+        default: numberConverterSoap
+      protocol:
+        enum:
+          - https
+          - http
+        default: http
+      environment:
+        default: api
+        enum:
+          - api
+          - api-dev
+          - api.staging
+tags:
+  - name: number-converter-soap
+    description: O escopo desta solução se restringe a atender as simulacoes de previdencia
+paths:
+  /api/converter/{numero}:
+    get:
+      summary: Realiza a conversão do número
+      description: Converte um número informado em texto
+      operationId: obterConversao
+      parameters:
+        - $ref: '#/components/parameters/numero'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberToWordsResponseType'
+        '204':
+          description: Sem conteudo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContentType'
+        '400':
+          description: Entrada/operação ilegal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+        '401':
+          description: Não autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+        '403':
+          description: Proibido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+        '404':
+          description: Não encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+        '422':
+          description: Não é possível processar a instrução.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+        '500':
+          description: Ocorreu um erro interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericMessage'
+components:
+  parameters:
+    numero:
+      name: numero
+      in: path
+      required: true
+      schema:
+        type: integer
+      example: 356
+  schemas:
+    GenericMessage:
+      type: object
+      properties:
+        mensagem:
+          type: string
+    NumberToWordsResponseType:
+      type: object
+      properties:
+        resultado:
+          type: string
+      example:
+        resultado: three hundred and fifty six
+    NoContentType:
+      type: object
+      properties:
+        mensagem:
+          type: string
+      example:
+        resultado: Sem conteúdo

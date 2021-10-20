@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: ${AMBIENTE:dev}
+---
+spring:
+  profiles: dev
+
+service:
+  endpoint:
+    conversaoWS: https://www.dataaccess.com/webservicesserver/numberconversion.wso?WSDL
